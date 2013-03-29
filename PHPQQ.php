@@ -113,13 +113,13 @@ class PHPQQ {
 
     public function getQQNumber() {
         //$qqNumber = '2498360247';
-        $qqNumber = '371276747';
+        $qqNumber = '';
         return $qqNumber;
     }
 
     public function getQQPass() {
         $qqPassword = 'qq123456';
-        $qqPassword = 'vways169';
+        $qqPassword = '';
         return $qqPassword;
     }
 
