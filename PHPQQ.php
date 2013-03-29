@@ -5,7 +5,7 @@
  *
  * @copyright  Copyright (c) 2011 - 2013 Toknot.com
  * @license    http://opensource.org/licenses/bsd-license.php New BSD License
- * @link       https://github.com/chopins/PHPQQ
+ * @link       https://github.com/chopins/toknot
  */
 class PHPQQ {
 
@@ -41,13 +41,14 @@ class PHPQQ {
     private $friendsBox;
 
     public function __construct() {
-        $this->initUI();
+        
         $this->setTimeZone();
         $this->begTime = microtime(true);
         $this->checkCWD();
         $this->callLoginUIPage();
         $this->verCache();
         $this->checkSignSafeKey();
+        
         $this->loginQQAccount();
         $this->loginWebQQ();
         //$this->poll();
@@ -112,18 +113,18 @@ class PHPQQ {
     }
 
     public function getQQNumber() {
-        //$qqNumber = '2498360247';
-        $qqNumber = '';
+        $qqNumber = '2498360247';
         return $qqNumber;
     }
 
     public function getQQPass() {
         $qqPassword = 'qq123456';
-        $qqPassword = '';
         return $qqPassword;
     }
 
     public function message($str) {
+        echo "$str\n";
+        return;
         if (is_resource($this->messageBox)) {
             ncurses_delwin($this->messageBox);
         }
@@ -284,7 +285,7 @@ class PHPQQ {
         $pPostDataArray['psessionid'] = $this->PSID;
         $pPostData = $this->data2URL($pPostDataArray);
         $loginRequestCookie = $this->getLoginWebQQCookie();
-        $this->message('开始轮询');
+        //$this->message('开始轮询');
         $kick = false;
         $ssp = stream_socket_pair(STREAM_PF_UNIX, STREAM_SOCK_STREAM, STREAM_IPPROTO_IP);
         if (!$ssp)
@@ -385,14 +386,16 @@ class PHPQQ {
         if ($this->loginResponseData['retcode'] == 0) {
             $this->PSID = $this->loginResponseData['result']['psessionid'];
             $this->message('WebQQ登录成功');
+            $this->initUI();
             $this->getFriendsList();
             $this->getOnlineFriendsList();
+            
             $this->poll();
         }
     }
 
     public function getFriendsList() {
-        $this->message('获取好友列表');
+        //$this->message('获取好友列表');
         $postDataArray = array('r' => '{"h":"hello","vfwebqq":"' . $this->loginResponseData['result']['vfwebqq'] . '"}');
         $postData = $this->data2URL($postDataArray);
         $loginRequestCookie = $this->getLoginWebQQCookie();
@@ -419,7 +422,7 @@ class PHPQQ {
     }
 
     public function getOnlineFriendsList() {
-        $this->message('获取在线好友列表');
+        //$this->message('获取在线好友列表');
         $time = time();
         $cookie = $this->getLoginWebQQCookie();
         $queryString = "/channel/get_online_buddies2?clientid={$this->clientId}&psessionid={$this->PSID}&t={$time}";
